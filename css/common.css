@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+.nav {
+	text-align: center;
+}
+
+.nav li {
+	display: inline-block;
+	background: #666;
+	color: #fff;
+	text-align: center;
+	width: 200px;
+}
+
+.nav li.off {
+}
+
+.nav li.on {
+	background: #ccc;
+	color: #333;
+}
+
+[class*=content] {
+}
+
+[class*=content] section {
+	height: 200px;
+	background: #999;
+}
+
+[class*=content] section.off {
+	display: none;
+}
+
+[class*=content] section.on {
+	display: block;
+}

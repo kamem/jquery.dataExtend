@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="css/import.css">
+<meta name="keywords" content="sass,compass">   
+<meta name="description" content="sass,compass test">
+<script src="js/jquery.js"></script>
+<script src="js/jquery.tab.js"></script>
+<script src="js/jquery.dataExtend.js"></script>
+<script>
+$(function(){
+	$('.nav').dataExtend('tab');
+});
+
+</script>
+<title>jQuery Tab</title>
+</head>
+<body>
+<h1>jQuery Tab</h1>
+<ul class="nav content_content" data-timer="2000" data-num="1" data-is-session-storage="true">
+	<li>nav1</li>
+	<li>nav2</li>
+	<li>nav3</li>
+	<li>nav4</li>
+</ul>
+<div class="content">
+	<section>
+		<h2>Content1</h2>
+	</section>
+	<section>
+		<h2>Content2</h2>
+	</section>
+	<section>
+		<h2>Content3</h2>
+	</section>
+	<section>
+		<h2>Content4</h2>
+	</section>
+</div>
+<ul class="content_assist">
+	<li class="prev">prev</li>
+	<li class="next">next</li>
+</ul>
+
+<ul class="nav content_content">
+	<li>nav1</li>
+	<li>nav2</li>
+	<li>nav3</li>
+	<li>nav4</li>
+</ul>
+<div class="content">
+	<section>
+		<h2>Content1</h2>
+	</section>
+	<section>
+		<h2>Content2</h2>
+	</section>
+	<section>
+		<h2>Content3</h2>
+	</section>
+	<section>
+		<h2>Content4</h2>
+	</section>
+</div>
+<ul class="content_assist">
+	<li class="prev">prev</li>
+	<li class="next">next</li>
+</ul>
+</body>
+</html>

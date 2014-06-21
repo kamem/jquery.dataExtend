@@ -56,7 +56,7 @@ $.fn.dataExtend = function(pluginName) {
 						return e.replace('-', '').toUpperCase();
 					}),
 					value = dataAry[1];
-				
+	
 				dataObj[subscript] = !isNaN(value) ? Number(value) :
 					value === 'true' || value === 'false' ? Boolean(value) : 
 					typeof window[value] === 'function' ? window[value] : value;

@@ -12,7 +12,7 @@
  *	* num : {Number} Initial position Number
  *	* isSessionStorage : {Object} 一をsession storageに保存する
  *	
- *	@class dataExtend
+ *	@class tab
  */
 
 (function($,global){

@@ -3,8 +3,6 @@ jquery.dataExtend
 
 I can be replaced by the data attribute Parameta of jQuery plug-in.
 
-GitHub: https://github.com/kamem/jquery.random
-
 If you want to operate in a different page and a plurality of plug 
 Because I thought this cumbersome and is not do unless you do not re-specified by preparing a js bother 
 I made a jQuery plug-in that you can use the parameters specified in the data-* instead.

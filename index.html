@@ -14,13 +14,12 @@
 $(function(){
 	$('.nav').dataExtend('tab');
 });
-
 </script>
-<title>jQuery Tab</title>
+<title>jQuery Tab & jQuery dataExtend</title>
 </head>
 <body>
-<h1>jQuery Tab</h1>
-<ul class="nav content_content" data-timer="2000" data-num="1" data-is-session-storage="true">
+<h1>jQuery Tab & jQuery dataExtend</h1>
+<ul class="nav content_content" data-timer="2000" data-type="slideshow" data-is-session-storage="true">
 	<li>nav1</li>
 	<li>nav2</li>
 	<li>nav3</li>
@@ -29,15 +28,19 @@ $(function(){
 <div class="content">
 	<section>
 		<h2>Content1</h2>
+		<p><a href="#content1">1</a></p>
 	</section>
 	<section>
 		<h2>Content2</h2>
+		<p><a href="#content2">2</a></p>
 	</section>
 	<section>
 		<h2>Content3</h2>
+		<p><a href="#content3">3</a></p>
 	</section>
 	<section>
 		<h2>Content4</h2>
+		<p><a href="#content4">4</a></p>
 	</section>
 </div>
 <ul class="content_assist">
@@ -45,7 +48,7 @@ $(function(){
 	<li class="next">next</li>
 </ul>
 
-<ul class="nav content_content">
+<ul class="nav content_content" data-timer="2000" data-type="slideshow" data-is-session-storage="true">
 	<li>nav1</li>
 	<li>nav2</li>
 	<li>nav3</li>

@@ -20,18 +20,24 @@
 	color: #333;
 }
 
-[class*=content] {
+.content {
+	height: 200px;
+	position: relative;
 }
 
 [class*=content] section {
 	height: 200px;
 	background: #999;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
 }
 
 [class*=content] section.off {
-	display: none;
+	/*display: none;*/
 }
 
 [class*=content] section.on {
-	display: block;
+	/*display: block;*/
 }

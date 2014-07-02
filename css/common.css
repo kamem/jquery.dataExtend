@@ -40,4 +40,5 @@
 
 [class*=content] section.on {
 	/*display: block;*/
+	z-index: 1;
 }

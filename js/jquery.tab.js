@@ -8,9 +8,11 @@
  *
  *	Date: 2014.06.21
  *
- *	* timer : {Number} 1000
- *	* num : {Number} Initial position Number
- *	* isSessionStorage : {Object} 一をsession storageに保存する
+ *	* timer: {Number} 1000
+ *	* num: {Number} Initial position Number.
+ *	* isSessionStorage: {Boolean} Save the session storage.
+ *	* type: {String} type of movement. (slideshow or opacity)
+ *	* speed: {Number} speed ​​at the time of the animation .
  *
  *	@class tab
  */
@@ -34,9 +36,7 @@ $.fn.tab = function(options) {
 			$contentNav = $('.content_' + contentClassName),
 			$content = $('.' + contentClassName),
 			$contentChild = $content.find('> *'),
-
 			$double = $contentNav.add($content),
-
 			$assist = $('.' + contentClassName + '_assist'),
 			$assistChild = $assist.find('> *'),
 
@@ -45,12 +45,10 @@ $.fn.tab = function(options) {
 			isSessionStorage = options.isSessionStorage,
 			contentNum = isSessionStorage && sessionStorage[storageName] ? Number(sessionStorage[storageName]) : options.num,
 
-			type = options.type,
 			speed = options.speed,
 			width = $content.width(),
 
 			timerNum = options.timer,
-
 			timer = {
 				content: '',
 				start: function(){
@@ -63,8 +61,58 @@ $.fn.tab = function(options) {
 					var index = contentNum + 1;
 					move(index);
 				}
-			};
+			},
 
+			typeName = options.type,
+
+			/**
+			 * returns the objects that function with the name that matches the typeName entered.
+			 *
+			 * @method type
+			 * @return {Object} objects of the function name that matches the typeName is included.
+			 */
+			type = (function(){
+				/**
+				 * position of the content at the time of the movement.
+				 *
+				 * @method slideshow
+				 * @param  {Number} index Number to move the tab
+				 */
+				function slideshow(index) {
+					$content.each(function() {
+						$(this).find('> *').each(function(j) {
+							$(this).queue([]).stop().animate({
+								left: j * width - (index * width)
+							},speed);
+						});
+					});
+				}
+
+				/**
+				 * move in feed-in feed-out.
+				 *
+				 * @method opacity
+				 */
+				function opacity() {
+					$content.each(function() {
+						$(this).find('> *.off').queue([]).stop().animate({
+								opacity: 0
+						},speed)
+						$(this).find('> *.on').animate({
+							opacity: 1
+						},speed);
+					});
+				}
+
+				return {
+					slideshow: slideshow,
+					opacity: opacity
+				}
+			})();
+
+		//------------------------------
+		// init
+		//------------------------------
 		reset();
 		move(contentNum);
 
@@ -77,6 +125,9 @@ $.fn.tab = function(options) {
 			});
 		}
 
+		//------------------------------
+		// event
+		//------------------------------
 		$navChild.click(function(){
 			var $this = $(this),
 				index = $this.index();
@@ -92,21 +143,9 @@ $.fn.tab = function(options) {
 			move(index);
 		});
 
-		/**
-		 * position of the content at the time of the movement.
-		 *
-		 * @param  {Number} index Number to move the tab
-		 */
-		function position(index) {
-			$content.each(function() {
-				$(this).find('> *').each(function(j) {
-					$(this).queue([]).stop().animate({
-						left: j * width - (index * width)
-					},speed);
-				});
-			});
-		}
-
+		//------------------------------
+		// function
+		//------------------------------
 		/**
 		 *	movement of the tab.
 		 *
@@ -122,8 +161,8 @@ $.fn.tab = function(options) {
 				$(this).find('> *').eq(index).addClass('on').removeClass('off');
 			});
 
-			if(type === 'slideshow') {
-				position(index);
+			if(typeName !== 'normal') {
+				type[typeName](index);
 			}
 
 			contentNum = index;

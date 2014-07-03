@@ -12,7 +12,8 @@
  *	* num: {Number} Initial position Number.
  *	* isSessionStorage: {Boolean} Save the session storage.
  *	* type: {String} type of movement. (slideshow or opacity)
- *	* speed: {Number} speed ​​at the time of the animation .
+ *	* speed: {Number} speed ​​at the time of the animation.
+ *	* easing: {String} easing name.
  *
  *	@class tab
  */
@@ -24,7 +25,8 @@ $.fn.tab = function(options) {
 		num: 0,
 		isSessionStorage: false,
 		type: 'normal',
-		speed: 400
+		speed: 400,
+		easing: 'linear'
 	}, options);
 
 	$(this).each(function(){
@@ -46,6 +48,7 @@ $.fn.tab = function(options) {
 			contentNum = isSessionStorage && sessionStorage[storageName] ? Number(sessionStorage[storageName]) : options.num,
 
 			speed = options.speed,
+			easing = options.easing,
 			width = $content.width(),
 
 			timerNum = options.timer,
@@ -83,7 +86,7 @@ $.fn.tab = function(options) {
 						$(this).find('> *').each(function(j) {
 							$(this).queue([]).stop().animate({
 								left: j * width - (index * width)
-							},speed);
+							},speed,easing);
 						});
 					});
 				}
@@ -100,7 +103,7 @@ $.fn.tab = function(options) {
 						},speed)
 						$(this).find('> *.on').animate({
 							opacity: 1
-						},speed);
+						},speed,easing);
 					});
 				}
 

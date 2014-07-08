@@ -91,9 +91,11 @@ $.fn.tab = function(options) {
 						$(this).find('> *').each(function(j) {
 							var positionIndex = (j - index);
 
-							if(Math.abs(positionIndex) > half) {
-								positionIndex = 0 < positionIndex ? positionIndex - contentLength :
-									positionIndex + contentLength;
+							if(isRoop) {
+								if(Math.abs(positionIndex) > half) {
+									positionIndex = 0 < positionIndex ? positionIndex - contentLength :
+										positionIndex + contentLength;
+								}
 							}
 
 							var position = positionIndex * width;

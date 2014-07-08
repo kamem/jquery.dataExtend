@@ -26,7 +26,8 @@ $.fn.tab = function(options) {
 		isSessionStorage: false,
 		type: 'normal',
 		speed: 400,
-		easing: 'linear'
+		easing: 'linear',
+		isRoop: false
 	}, options);
 
 	$(this).each(function(){
@@ -49,7 +50,10 @@ $.fn.tab = function(options) {
 
 			speed = options.speed,
 			easing = options.easing,
+			isRoop = options.isRoop,
 			width = $content.width(),
+			isFirstMoveFinished = false;
+
 
 			timerNum = options.timer,
 			timer = {
@@ -82,11 +86,32 @@ $.fn.tab = function(options) {
 				 * @param  {Number} index Number to move the tab
 				 */
 				function slideshow(index) {
+					var half = Math.floor((contentLength - 1) / 2);
 					$content.each(function() {
-						$(this).find('> *').each(function(j) {
-							$(this).queue([]).stop().animate({
-								left: j * width - (index * width)
-							},speed,easing);
+						$(this).find('> *').css({zIndex:0}).each(function(j) {
+							var positionIndex = (j - index),
+								parentPositionIndex = (j - contentNum);
+
+							if(Math.abs(positionIndex) > half) {
+								positionIndex = 0 < positionIndex ? positionIndex - contentLength :
+									positionIndex + contentLength;
+
+								parentPositionIndex = 0 < parentPositionIndex ? parentPositionIndex - contentLength :
+									parentPositionIndex + contentLength;
+							}
+
+							var position = positionIndex * width;
+
+							console.log(contentNum);
+							console.log(j,parentPositionIndex,positionIndex);
+							$(this).css({
+								zIndex: 0 < parentPositionIndex && 0 > positionIndex ? -1 :
+									0 > parentPositionIndex && 0 < positionIndex ? -1 : 0
+							}).queue([]).stop().animate({
+								left: position
+							},
+							isFirstMoveFinished ? speed : 0,
+							easing);
 						});
 					});
 				}
@@ -118,6 +143,7 @@ $.fn.tab = function(options) {
 		//------------------------------
 		reset();
 		move(contentNum);
+		isFirstMoveFinished = true;
 
 		if(typeof timerNum === 'number') {
 			timer.start();

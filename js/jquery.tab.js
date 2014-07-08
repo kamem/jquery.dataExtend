@@ -88,26 +88,18 @@ $.fn.tab = function(options) {
 				function slideshow(index) {
 					var half = Math.floor((contentLength - 1) / 2);
 					$content.each(function() {
-						$(this).find('> *').css({zIndex:0}).each(function(j) {
-							var positionIndex = (j - index),
-								parentPositionIndex = (j - contentNum);
+						$(this).find('> *').each(function(j) {
+							var positionIndex = (j - index);
 
 							if(Math.abs(positionIndex) > half) {
 								positionIndex = 0 < positionIndex ? positionIndex - contentLength :
 									positionIndex + contentLength;
-
-								parentPositionIndex = 0 < parentPositionIndex ? parentPositionIndex - contentLength :
-									parentPositionIndex + contentLength;
 							}
 
 							var position = positionIndex * width;
 
-							console.log(contentNum);
-							console.log(j,parentPositionIndex,positionIndex);
-							$(this).css({
-								zIndex: 0 < parentPositionIndex && 0 > positionIndex ? -1 :
-									0 > parentPositionIndex && 0 < positionIndex ? -1 : 0
-							}).queue([]).stop().animate({
+
+							$(this).queue([]).stop().animate({
 								left: position
 							},
 							isFirstMoveFinished ? speed : 0,

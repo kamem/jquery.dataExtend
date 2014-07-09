@@ -52,7 +52,8 @@ $.fn.tab = function(options) {
 			easing = options.easing,
 			isRoop = options.isRoop,
 			width = $content.width(),
-			isFirstMoveFinished = false;
+			isFirstMoveFinished = false,
+			isMove = true,
 
 
 			timerNum = options.timer,
@@ -76,7 +77,7 @@ $.fn.tab = function(options) {
 			 * returns the objects that function with the name that matches the typeName entered.
 			 *
 			 * @method type
-			 * @return {Object} objects of the function name that matches the typeName is included.
+			 * @return {Object} obje:cts of the function name that matches the typeName is included.
 			 */
 			type = (function(){
 				/**
@@ -87,25 +88,51 @@ $.fn.tab = function(options) {
 				 */
 				function slideshow(index) {
 					var half = Math.floor((contentLength - 1) / 2);
+					if(isRoop) {
+						isMove = false;
+						var indexParentPosition = (index - contentNum)
+						if(Math.abs(indexParentPosition) > half) {
+							indexParentPosition = 0 < indexParentPosition ? indexParentPosition - contentLength :
+								indexParentPosition + contentLength;
+						}
+						var isPlus = 0 < indexParentPosition ? true : false;
+					}
+
 					$content.each(function() {
-						$(this).find('> *').each(function(j) {
-							var positionIndex = (j - index);
+						$(this).find('> *').css({zIndex:0}).each(function(j) {
+							var positionIndex = (j - index),
+								parentPositionIndex = (j - contentNum);
 
 							if(isRoop) {
 								if(Math.abs(positionIndex) > half) {
 									positionIndex = 0 < positionIndex ? positionIndex - contentLength :
 										positionIndex + contentLength;
 								}
+
+								if(Math.abs(parentPositionIndex) > half) {
+									parentPositionIndex = 0 < parentPositionIndex ? parentPositionIndex - contentLength :
+										parentPositionIndex + contentLength;
+								}
+
+								$(this).css({
+									zIndex: 0 < parentPositionIndex && 0 > positionIndex ? (isPlus? -1 :-2) :
+										0 > parentPositionIndex && 0 < positionIndex ? (isPlus ? -2 :-1) : 0
+								})
+
+								isSpeedZero = 0 < parentPositionIndex && 0 > positionIndex ? (isPlus? false : true) :
+									0 > parentPositionIndex && 0 < positionIndex ? (isPlus ? true : false) : false;
 							}
 
 							var position = positionIndex * width;
 
-
 							$(this).queue([]).stop().animate({
 								left: position
 							},
-							isFirstMoveFinished ? speed : 0,
-							easing);
+							isFirstMoveFinished ? isSpeedZero ? 0 : speed : 0,
+							easing,
+							function(){
+								isMove = true;
+							});
 						});
 					});
 				}
@@ -155,15 +182,19 @@ $.fn.tab = function(options) {
 			var $this = $(this),
 				index = $this.index();
 
-			move(index);
+
+			if(isMove) {
+				move(index);
+			}
 		});
 
 		$assistChild.click(function(){
 			var className = $(this).prop('class'),
 				index = className === 'prev' ? contentNum - 1 :
 					className === 'next' ? contentNum + 1 : 0;
-
-			move(index);
+			if(isMove){
+				move(index);
+			}
 		});
 
 		//------------------------------

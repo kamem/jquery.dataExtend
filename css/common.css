@@ -1,6 +1,8 @@
 @charset "utf-8";
 
 .nav {
+	margin: 0 auto;
+	width: 600px;
 	text-align: center;
 }
 
@@ -9,7 +11,7 @@
 	background: #666;
 	color: #fff;
 	text-align: center;
-	width: 200px;
+	width: 10%;
 }
 
 .nav li.off {
@@ -21,17 +23,46 @@
 }
 
 .content {
-	height: 200px;
+	margin: 0 auto;
+	width: 100px;
+	height: 100px;
 	position: relative;
 }
 
+.content h2 {
+	font-size: 80px;
+	line-height: 100px;
+	text-align: center;
+}
+
+.content a {
+	text-decoration: none;
+	color: #fff;
+}
+
 [class*=content] section {
-	height: 200px;
+	height: 100px;
 	background: #999;
 	position: absolute;
 	left: 0;
 	top: 0;
 	width: 100%;
+}
+
+[class*=content] section:nth-child(1) {
+	background: red;
+}
+[class*=content] section:nth-child(2) {
+	background: orange;
+}
+[class*=content] section:nth-child(4) {
+	background: blue;
+}
+[class*=content] section:nth-child(5) {
+	background: yellow;
+}
+[class*=content] section:nth-child(6) {
+	background: purple;
 }
 
 [class*=content] section.off {

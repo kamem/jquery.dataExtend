@@ -67,6 +67,7 @@
 
 [class*=content] section.off {
 	/*display: none;*/
+	opacity: 0.2;
 }
 
 [class*=content] section.on {

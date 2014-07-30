@@ -58,7 +58,8 @@ $.fn.dataExtend = function(pluginName) {
 					value = dataAry[1];
 
 				dataObj[subscript] = !isNaN(value) ? Number(value) :
-					value === 'true' || value === 'false' ? Boolean(value) :
+					value === 'true' ? true :
+					value === 'false' ? false :
 					typeof window[value] === 'function' ? window[value] : value;
 			};
 

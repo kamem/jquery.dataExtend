@@ -6,9 +6,9 @@
  *	* http://develo.org/
  *	* Licensed Under the MIT.
  *
- *	Date: 2014.06.21
+ *	Date: 2014.08.1
  *
- * 	* name : {String} Toggle Class Name
+ * 	* name: {String} Toggle Class Name
  *	* isSessionStorage: {Boolean} Save the session storage.
  *
  *	@class extraToggleClass

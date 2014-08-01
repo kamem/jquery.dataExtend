@@ -1,5 +1,25 @@
 @charset "utf-8";
 
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body > h1 {
+	margin: 0 auto;
+	padding: 0.3em;
+	font-size: 30px;
+	background: #333;
+	color: #fff;
+}
+
+body > h2 {
+	margin: 1.5em auto 0.5em;
+	width: 900px;
+	font-size: 30px;
+	background: #ccc;
+}
+
 .nav {
 	margin: 0 auto;
 	width: 600px;
@@ -11,7 +31,7 @@
 	background: #666;
 	color: #fff;
 	text-align: center;
-	width: 10%;
+	width: 15.9%;
 }
 
 .nav li.off {
@@ -22,26 +42,44 @@
 	color: #333;
 }
 
-.content {
+
+[class*=_assist] {
+	margin: 0.5em auto;
+	width: 600px;
+	height: 1em;
+}
+
+[class*=_assist] > * {
+	list-style-type: none;
+}
+
+[class*=_assist] .prev {
+	float: left;
+}
+[class*=_assist] .next {
+	float: right;
+}
+
+[class*=main]:not(ul) {
 	margin: 0 auto;
-	width: 100px;
-	height: 100px;
+	width: 200px;
+	height: 130px;
 	position: relative;
 }
 
-.content h2 {
+[class*=main]:not(ul) h2 {
 	font-size: 80px;
-	line-height: 100px;
+	line-height: 130px;
 	text-align: center;
 }
 
-.content a {
+[class*=main]:not(ul) a {
 	text-decoration: none;
 	color: #fff;
 }
 
-[class*=content] section {
-	height: 100px;
+[class*=main] section {
+	height: 130px;
 	background: #999;
 	position: absolute;
 	left: 0;
@@ -49,28 +87,27 @@
 	width: 100%;
 }
 
-[class*=content] section:nth-child(1) {
+[class*=main] section:nth-child(1) {
 	background: red;
 }
-[class*=content] section:nth-child(2) {
+[class*=main] section:nth-child(2) {
 	background: orange;
 }
-[class*=content] section:nth-child(4) {
+[class*=main] section:nth-child(4) {
 	background: blue;
 }
-[class*=content] section:nth-child(5) {
+[class*=main] section:nth-child(5) {
 	background: yellow;
 }
-[class*=content] section:nth-child(6) {
+[class*=main] section:nth-child(6) {
 	background: purple;
 }
 
-[class*=content] section.off {
+[class*=main] section.off {
 	/*display: none;*/
-	opacity: 0.2;
 }
 
-[class*=content] section.on {
+[class*=main] section.on {
 	/*display: block;*/
 	z-index: 1;
 }

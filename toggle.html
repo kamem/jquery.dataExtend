@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="keywords" content="sass,compass">
+<meta name="description" content="sass,compass test">
+<script src="js/jquery.js"></script>
+<script src="js/jquery.extraToggleClass.js"></script>
+<script src="js/jquery.dataExtend.js"></script>
+<script>
+$(function(){
+	$('.toggle').dataExtend('extraToggleClass');
+});
+</script>
+<style>
+.on {
+	background: orange;
+	color: #fff;
+}
+.yellow {
+	background: yellow;
+	color: #fff;
+}
+.pink {
+	background: pink;
+	color: #fff;
+}
+</style>
+<title>jquery.toggle</title>
+</head>
+<body>
+
+<p class="toggle content_test" data-is-session-storage="true">toggle click {isSessionStorge:true}</p>
+
+<p class="test">test</p>
+<p class="test">test</p>
+
+<p class="toggle content_test2" data-name="yellow" data-is-session-storage="true">toggle click {isSessionStorge:true,name: 'yellow'}</p>
+<p class="test2">test</p>
+<p class="test2">test</p>
+<p class="test2">test</p>
+<p class="test2">test</p>
+<p class="test2">test</p>
+
+<p class="toggle content_test3" data-name="pink">toggle click {name: 'pink'}</p>
+<p class="test3">test</p>
+<p class="test">test</p>
+<p class="test">test</p>
+
+</body>
+</html>

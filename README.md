@@ -3,8 +3,8 @@ jquery.dataExtend
 
 I can be replaced by the data attribute Parameta of jQuery plug-in.
 
-If you want to operate in a different page and a plurality of plug 
-Because I thought this cumbersome and is not do unless you do not re-specified by preparing a js bother 
+If you want to operate in a different page and a plurality of plug
+Because I thought this cumbersome and is not do unless you do not re-specified by preparing a js bother
 I made a jQuery plug-in that you can use the parameters specified in the data-* instead.
 
 [DEMO]
@@ -44,3 +44,13 @@ Usage
 3. you write the data attribute in HTML（you connect the "-" If camelcase）※ is-session-storage = isSessionStorage
 
 		<p class="tab" data-timer="1000" data-num="1" is-session-storage="true">
+
+
+
+License
+----------
++ Copyright 2009 &copy; kamem
++ [http://www.opensource.org/licenses/mit-license.php][mit]
+
+[develo.org]: http://develo.org/ "develo.org"
+[MIT]: http://www.opensource.org/licenses/mit-license.php

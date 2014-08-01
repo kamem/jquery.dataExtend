@@ -20,15 +20,22 @@
 
 (function($,global){
 $.fn.tab = function(options) {
-	options = $['extend']({
-		timer: false,
-		num: 0,
-		isSessionStorage: false,
-		type: 'normal',
-		speed: 400,
-		easing: 'linear',
-		isRoop: false
-	}, options);
+	var options = $['extend']({
+			timer: false,
+			num: 0,
+			isSessionStorage: false,
+			type: 'normal',
+			speed: 400,
+			easing: 'linear',
+			isRoop: false
+		}, options),
+
+		isSessionStorage = options.isSessionStorage,
+		speed = options.speed,
+		easing = options.easing,
+		isRoop = options.isRoop,
+		timerNum = options.timer,
+		typeName = options.type;
 
 	$(this).each(function(){
 		var $nav =$(this),
@@ -36,6 +43,7 @@ $.fn.tab = function(options) {
 
 			contentLength = $navChild.size(),
 			contentClassName = $nav.prop('class').match(/content_([^(\s||")]+)/)[1],
+
 			$contentNav = $('.content_' + contentClassName),
 			$content = $('.' + contentClassName),
 			$contentChild = $content.find('> *'),
@@ -44,19 +52,12 @@ $.fn.tab = function(options) {
 			$assistChild = $assist.find('> *'),
 
 			storageName = contentClassName + 'TabNum',
-
-			isSessionStorage = options.isSessionStorage,
 			contentNum = isSessionStorage && sessionStorage[storageName] ? Number(sessionStorage[storageName]) : options.num,
 
-			speed = options.speed,
-			easing = options.easing,
-			isRoop = options.isRoop,
 			width = $content.width(),
 			isFirstMoveFinished = false,
 			isMove = true,
 
-
-			timerNum = options.timer,
 			timer = {
 				content: '',
 				start: function(){
@@ -70,8 +71,6 @@ $.fn.tab = function(options) {
 					move(index);
 				}
 			},
-
-			typeName = options.type,
 
 			/**
 			 * returns the objects that function with the name that matches the typeName entered.
@@ -87,48 +86,48 @@ $.fn.tab = function(options) {
 				 * @param  {Number} index Number to move the tab
 				 */
 				function slideshow(index) {
-					var half = Math.floor((contentLength - 1) / 2);
 					if(isRoop) {
 						isMove = false;
-						var indexParentPosition = (index - contentNum)
+
+						var half = Math.floor((contentLength - 1) / 2),
+							indexParentPosition = index - contentNum;
+
 						if(Math.abs(indexParentPosition) > half) {
-							indexParentPosition = 0 < indexParentPosition ? indexParentPosition - contentLength :
-								indexParentPosition + contentLength;
+							indexParentPosition = indexParentPosition + contentLength * (0 < indexParentPosition ? -1 : 1);
 						}
+						var moveNum = Math.abs(indexParentPosition);
 						var isPlus = 0 < indexParentPosition ? true : false;
 					}
 
 					$content.each(function() {
 						$(this).find('> *').css({zIndex:0}).each(function(j) {
-							var positionIndex = (j - index),
-								parentPositionIndex = (j - contentNum);
+							var positionIndex = j - index,
+								parentPositionIndex = j - contentNum;
 
 							if(isRoop) {
 								if(Math.abs(positionIndex) > half) {
-									positionIndex = 0 < positionIndex ? positionIndex - contentLength :
-										positionIndex + contentLength;
+									positionIndex = positionIndex + contentLength * (0 < positionIndex ? -1 : 1);
 								}
 
 								if(Math.abs(parentPositionIndex) > half) {
-									parentPositionIndex = 0 < parentPositionIndex ? parentPositionIndex - contentLength :
-										parentPositionIndex + contentLength;
+									parentPositionIndex = parentPositionIndex + contentLength * (0 < parentPositionIndex ? -1 : 1);
 								}
 
-								$(this).css({
-									zIndex: 0 < parentPositionIndex && 0 > positionIndex ? (isPlus? -1 :-2) :
-										0 > parentPositionIndex && 0 < positionIndex ? (isPlus ? -2 :-1) : 0
-								})
+								isSpeedZero = 0 < parentPositionIndex && 0 > positionIndex ? !isPlus :
+									0 > parentPositionIndex && 0 < positionIndex ? isPlus : false;
 
-								isSpeedZero = 0 < parentPositionIndex && 0 > positionIndex ? (isPlus? false : true) :
-									0 > parentPositionIndex && 0 < positionIndex ? (isPlus ? true : false) : false;
+								$(this).css({
+									left: isSpeedZero ? (positionIndex + (isPlus ? moveNum : -moveNum)) * width : $(this).position().left
+								})
 							}
 
 							var position = positionIndex * width;
 
-							$(this).queue([]).stop().animate({
+							$(this).queue([]).stop()
+							.animate({
 								left: position
 							},
-							isFirstMoveFinished ? isSpeedZero ? 0 : speed : 0,
+							isFirstMoveFinished ? speed : 0,
 							easing,
 							function(){
 								isMove = true;

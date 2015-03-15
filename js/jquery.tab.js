@@ -2,11 +2,11 @@
  *	jQuery tab.
  *	jQuery required.
  *
- *	* Copyright 2014 (c) kamem
+ *	* Copyright 2015 (c) kamem
  *	* http://develo.org/
  *	* Licensed Under the MIT.
  *
- *	Date: 2014.06.21
+ *	Date: 2015.03.16
  *
  *	* timer: {Number} 1000
  *	* num: {Number} Initial position Number.

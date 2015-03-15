@@ -38,125 +38,119 @@ $.fn.tab = function(options) {
 		typeName = options.type;
 
 	$(this).each(function(){
-		var $nav =$(this),
-			$navChild = $nav.find('> *'),
+		var $nav =$(this);
+		var $navChild = $nav.find('> *');
 
-			contentLength = $navChild.size(),
-			contentClassName = $nav.prop('class').match(/content_([^(\s||")]+)/)[1],
+		var contentLength = $navChild.size();
+		var contentClassName = $nav.prop('class').match(/content_([^(\s||")]+)/)[1];
 
-			$contentNav = $('.content_' + contentClassName),
-			$content = $('.' + contentClassName),
-			$contentChild = $content.find('> *'),
-			$double = $contentNav.add($content),
-			$assist = $('.' + contentClassName + '_assist'),
-			$assistChild = $assist.find('> *'),
+		var $contentNav = $('.content_' + contentClassName);
+		var $content = $('.' + contentClassName);
+		var $double = $contentNav.add($content);
+		var $assist = $('.' + contentClassName + '_assist');
+		var $assistChild = $assist.find('> *');
 
-			storageName = contentClassName + 'TabNum',
-			contentNum = isSessionStorage && sessionStorage[storageName] ? Number(sessionStorage[storageName]) : options.num,
+		var storageName = contentClassName + 'TabNum';
+		var contentNum = isSessionStorage && sessionStorage[storageName] ? Number(sessionStorage[storageName]) : options.num;
 
-			width = $content.width(),
-			isFirstMoveFinished = false,
-			isMove = true,
+		var width = $content.width();
+		var isFirstMoveFinished = false;
+		var isMove = true;
 
-			timer = {
-				content: '',
-				start: function(){
-					this.content = setInterval(this.main, timerNum);
-				},
-				stop: function() {
-					clearInterval(this.content);
-				},
-				main: function() {
-					var index = contentNum + 1;
-					move(index);
-				}
+		var timer = {
+			content: '',
+			start: function(){
+				this.content = setInterval(this.main, timerNum);
 			},
+			stop: function() {
+				clearInterval(this.content);
+			},
+			main: function() {
+				var index = contentNum + 1;
+				move(index);
+			}
+		};
 
+		var centerIndex = Math.floor((contentLength - 1) / 2);
+
+		/**
+		 * returns the objects that function with the name that matches the typeName entered.
+		 *
+		 * @method type
+		 * @return {Object} obje:cts of the function name that matches the typeName is included.
+		 */
+		var type = (function(){
 			/**
-			 * returns the objects that function with the name that matches the typeName entered.
+			 * position of the content at the time of the movement.
 			 *
-			 * @method type
-			 * @return {Object} obje:cts of the function name that matches the typeName is included.
+			 * @method slideshow
+			 * @param  {Number} index Number to move the tab
 			 */
-			type = (function(){
-				/**
-				 * position of the content at the time of the movement.
-				 *
-				 * @method slideshow
-				 * @param  {Number} index Number to move the tab
-				 */
-				function slideshow(index) {
-					if(isRoop) {
-						isMove = false;
+			function slideshow(index) {
+				if(isRoop) {
+					isMove = false;
+					var AmountOfMovement = getPositionNum(index - contentNum);
+				}
 
-						var half = Math.floor((contentLength - 1) / 2),
-							indexParentPosition = index - contentNum;
+				$content.each(function() {
+					$(this).find('> *').css({zIndex:0}).each(function(j) {
+						var positionNum = j - index;
 
-						if(Math.abs(indexParentPosition) > half) {
-							indexParentPosition = indexParentPosition + contentLength * (0 < indexParentPosition ? -1 : 1);
+						if(isRoop) {
+							positionNum = getPositionNum(positionNum);
+							$(this).css({
+								left: (positionNum + AmountOfMovement) * width
+							})
 						}
-						var moveNum = Math.abs(indexParentPosition);
-						var isPlus = 0 < indexParentPosition ? true : false;
-					}
 
-					$content.each(function() {
-						$(this).find('> *').css({zIndex:0}).each(function(j) {
-							var positionIndex = j - index,
-								parentPositionIndex = j - contentNum;
+						var position = positionNum * width;
 
-							if(isRoop) {
-								if(Math.abs(positionIndex) > half) {
-									positionIndex = positionIndex + contentLength * (0 < positionIndex ? -1 : 1);
-								}
-
-								if(Math.abs(parentPositionIndex) > half) {
-									parentPositionIndex = parentPositionIndex + contentLength * (0 < parentPositionIndex ? -1 : 1);
-								}
-
-								isSpeedZero = 0 < parentPositionIndex && 0 > positionIndex ? !isPlus :
-									0 > parentPositionIndex && 0 < positionIndex ? isPlus : false;
-
-								$(this).css({
-									left: isSpeedZero ? (positionIndex + (isPlus ? moveNum : -moveNum)) * width : $(this).position().left
-								})
-							}
-
-							var position = positionIndex * width;
-
-							$(this).queue([]).stop()
-							.animate({
-								left: position
-							},
-							isFirstMoveFinished ? speed : 0,
-							easing,
-							function(){
-								isMove = true;
-							});
+						$(this).queue([]).stop()
+						.animate({
+							left: position
+						},
+						isFirstMoveFinished ? speed : 0,
+						easing,
+						function(){
+							isMove = true;
 						});
 					});
-				}
+				});
+			}
 
-				/**
-				 * move in feed-in feed-out.
-				 *
-				 * @method opacity
-				 */
-				function opacity() {
-					$content.each(function() {
-						$(this).find('> *.off').queue([]).stop().animate({
-								opacity: 0
-						},speed)
-						$(this).find('> *.on').animate({
-							opacity: 1
-						},speed,easing);
-					});
+			function getPositionNum(positionNum) {
+				if(Math.abs(positionNum) > centerIndex) {
+					if(0 < positionNum) {
+						return positionNum + -contentLength;
+					} else {
+						return positionNum + contentLength
+					}
+				} else {
+					return positionNum;
 				}
+			}
 
-				return {
-					slideshow: slideshow,
-					opacity: opacity
-				}
-			})();
+			/**
+			 * move in feed-in feed-out.
+			 *
+			 * @method opacity
+			 */
+			function opacity() {
+				$content.each(function() {
+					$(this).find('> *.off').queue([]).stop().animate({
+							opacity: 0
+					},speed)
+					$(this).find('> *.on').animate({
+						opacity: 1
+					},speed,easing);
+				});
+			}
+
+			return {
+				slideshow: slideshow,
+				opacity: opacity
+			}
+		})();
 
 		//------------------------------
 		// init

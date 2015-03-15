@@ -28,20 +28,21 @@ $.fn.tab = function(options) {
 			speed: 400,
 			easing: 'linear',
 			isRoop: false
-		}, options),
+		}, options);
 
-		isSessionStorage = options.isSessionStorage,
-		speed = options.speed,
-		easing = options.easing,
-		isRoop = options.isRoop,
-		timerNum = options.timer,
-		typeName = options.type;
+	var isSessionStorage = options.isSessionStorage;
+	var speed = options.speed;
+	var easing = options.easing;
+	var isRoop = options.isRoop;
+	var timerNum = options.timer;
+	var typeName = options.type;
 
 	$(this).each(function(){
 		var $nav =$(this);
 		var $navChild = $nav.find('> *');
 
 		var contentLength = $navChild.size();
+		var contentLengthHalf = Math.floor((contentLength - 1) / 2);
 		var contentClassName = $nav.prop('class').match(/content_([^(\s||")]+)/)[1];
 
 		var $contentNav = $('.content_' + contentClassName);
@@ -51,7 +52,7 @@ $.fn.tab = function(options) {
 		var $assistChild = $assist.find('> *');
 
 		var storageName = contentClassName + 'TabNum';
-		var contentNum = isSessionStorage && sessionStorage[storageName] ? Number(sessionStorage[storageName]) : options.num;
+		var selectedIndex = isSessionStorage && sessionStorage[storageName] ? Number(sessionStorage[storageName]) : options.num;
 
 		var width = $content.width();
 		var isFirstMoveFinished = false;
@@ -66,12 +67,10 @@ $.fn.tab = function(options) {
 				clearInterval(this.content);
 			},
 			main: function() {
-				var index = contentNum + 1;
+				var index = selectedIndex + 1;
 				move(index);
 			}
 		};
-
-		var centerIndex = Math.floor((contentLength - 1) / 2);
 
 		/**
 		 * returns the objects that function with the name that matches the typeName entered.
@@ -89,7 +88,7 @@ $.fn.tab = function(options) {
 			function slideshow(index) {
 				if(isRoop) {
 					isMove = false;
-					var AmountOfMovement = getPositionNum(index - contentNum);
+					var AmountOfMovement = getPositionNum(index - selectedIndex);
 				}
 
 				$content.each(function() {
@@ -119,7 +118,7 @@ $.fn.tab = function(options) {
 			}
 
 			function getPositionNum(positionNum) {
-				if(Math.abs(positionNum) > centerIndex) {
+				if(Math.abs(positionNum) > contentLengthHalf) {
 					if(0 < positionNum) {
 						return positionNum + -contentLength;
 					} else {
@@ -155,8 +154,8 @@ $.fn.tab = function(options) {
 		//------------------------------
 		// init
 		//------------------------------
-		reset();
-		move(contentNum);
+		classNameReset();
+		move(selectedIndex);
 		isFirstMoveFinished = true;
 
 		if(typeof timerNum === 'number') {
@@ -172,21 +171,19 @@ $.fn.tab = function(options) {
 		// event
 		//------------------------------
 		$navChild.click(function(){
-			var $this = $(this),
-				index = $this.index();
-
-
 			if(isMove) {
-				move(index);
+				move($(this).index());
 			}
 		});
 
 		$assistChild.click(function(){
-			var className = $(this).prop('class'),
-				index = className === 'prev' ? contentNum - 1 :
-					className === 'next' ? contentNum + 1 : 0;
+			var className = $(this).prop('class');
 			if(isMove){
-				move(index);
+				if(className === 'prev') {
+					move(selectedIndex - 1);
+				} else if(className === 'next') {
+					move(selectedIndex + 1);
+				}
 			}
 		});
 
@@ -203,7 +200,7 @@ $.fn.tab = function(options) {
 			var index = index < 0 ? contentLength - 1 :
 				index >= contentLength ? 0 : index;
 
-			reset();
+			classNameReset();
 			$double.each(function(){
 				$(this).find('> *').eq(index).addClass('on').removeClass('off');
 			});
@@ -212,19 +209,19 @@ $.fn.tab = function(options) {
 				type[typeName](index);
 			}
 
-			contentNum = index;
+			selectedIndex = index;
 
 			if(typeof sessionStorage !== 'undefind') {
-				sessionStorage[storageName] = contentNum;
+				sessionStorage[storageName] = selectedIndex;
 			}
 		}
 
 		/**
 		 *	I want to off all on the class.
 		 *
-		 *	@method reset
+		 *	@method classNameReset
 		 */
-		function reset() {
+		function classNameReset() {
 			$double.find('> *').addClass('off').removeClass('on');
 		}
 	});

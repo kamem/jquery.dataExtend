@@ -2,11 +2,11 @@
  *	jQuery extraToggleClass.
  *	jQuery required.
  *
- *	* Copyright 2014 (c) kamem
+ *	* Copyright 2015 (c) kamem
  *	* http://develo.org/
  *	* Licensed Under the MIT.
  *
- *	Date: 2014.08.1
+ *	Date: 2015.03.16
  *
  * 	* name: {String} Toggle Class Name
  *	* isSessionStorage: {Boolean} Save the session storage.
@@ -19,33 +19,31 @@ $.fn.extraToggleClass = function(options) {
 	var options = $.extend({
 			name: 'on',
 			isSessionStorage: false
-		}, options),
+		}, options);
 
-		name = options.name,
-		isSessionStorage = options.isSessionStorage,
-
-    rangeMatch = new RegExp('content_([^(\\s||")]+)');
-
+	var name = options.name;
+	var isSessionStorage = options.isSessionStorage;
+	var rangeMatch = new RegExp('content_([^(\\s||")]+)');
 
 	$(this).each(function(){
-		var $this =$(this),
+		var $this =$(this);
 
-			className = $this.prop('class'),
-			contentClassMatch = className.match(rangeMatch),
-			contentClassName = contentClassMatch ? $this.prop('class').match(rangeMatch)[1] : '',
+		var className = $this.prop('class');
+		var contentClassMatch = className.match(rangeMatch);
+		var contentClassName = contentClassMatch ? $this.prop('class').match(rangeMatch)[1] : '';
 
-			storageName = (contentClassName ? contentClassName: '') + 'extraToggle',
-			isContent = isSessionStorage && sessionStorage[storageName] ? sessionStorage[storageName] === 'true' : false;
+		var storageName = (contentClassName ? contentClassName: '') + 'extraToggle';
+		var isContent = isSessionStorage && sessionStorage[storageName] ? sessionStorage[storageName] === 'true' : false;
 
 		if(contentClassMatch) {
-			var $toggle = $('.content_' + contentClassName),
-				$content = $('.' + contentClassName),
-				$double = $toggle.add($content);
+			var $toggle = $('.content_' + contentClassName);
+			var $content = $('.' + contentClassName);
+			var $double = $toggle.add($content);
 		}
 
-		set();
+		setClassName();
 
-		function set() {
+		function setClassName() {
 			var $changeContent = typeof $double !== 'undefined' ? $double : $this;
 			$changeContent[(isContent ? 'add' : 'remove') + 'Class'](name);
 		}
@@ -53,7 +51,7 @@ $.fn.extraToggleClass = function(options) {
 		$this.on('click',function(){
 			isContent = !isContent;
 
-			set();
+			setClassName();
 
 			if(typeof sessionStorage !== 'undefind') {
 				sessionStorage[storageName] = isContent;

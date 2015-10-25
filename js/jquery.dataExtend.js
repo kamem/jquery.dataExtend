@@ -30,14 +30,14 @@ $.fn.dataExtend = function(pluginName) {
 		 * @type {Array}
 		 */
 		var data = (function(){
-			var tagAry = $this[0].outerHTML.match(/<([^(>)]+)/)[1].split(/[\s,||>]+/),
+			var tagAry = $this[0].outerHTML.match(/<([^(>)]+)/)[1].split(/[\s||>]+/),
 				dataAry = [];
 
 			for(var i = 0;i < tagAry.length;i++) {
 				if(tagAry[i].indexOf('data') >= 0) {
 					dataAry.push(tagAry[i].replace(/"|data-/g, ''));
-				};
-			};
+				}
+			}
 
 			return dataAry;
 		})();
@@ -52,16 +52,20 @@ $.fn.dataExtend = function(pluginName) {
 			var dataObj = {};
 			for(var i = 0;i < data.length;i++) {
 				var dataAry = data[i].split('=');
-					subscript = dataAry[0].replace(/-(.)/g, function(e){
-						return e.replace('-', '').toUpperCase();
-					}),
-					value = dataAry[1];
+				var subscript = dataAry[0].replace(/-(.)/g, function(e){
+					return e.replace('-', '').toUpperCase();
+				});
+				var value = dataAry[1];
+
+				if(/^(\[|\{)/g.test(value)) {
+					value = JSON.parse(value.replace(/\'/g,'\"'));
+				}
 
 				dataObj[subscript] = !isNaN(value) ? Number(value) :
 					value === 'true' ? true :
 					value === 'false' ? false :
 					typeof window[value] === 'function' ? window[value] : value;
-			};
+			}
 
 			return dataObj;
 		})();

@@ -30,7 +30,7 @@ $.fn.dataExtend = function(pluginName) {
 		 * @type {Array}
 		 */
 		var data = (function(){
-			var tagAry = $this[0].outerHTML.match(/<([^(>)]+)/)[1].split(/[\s||>]+/),
+			var tagAry = $this[0].outerHTML.match(/<([^>]+)/)[1].replace(/(\s)data-+/g, '@@data-').split('@@'),
 				dataAry = [];
 
 			for(var i = 0;i < tagAry.length;i++) {
